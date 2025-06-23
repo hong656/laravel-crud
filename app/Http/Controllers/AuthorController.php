@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
+    public function __construct()
+    {
+        // This applies the CoursePolicy to all methods
+        $this->authorizeResource(Course::class, 'course');
+    }
+
     public function index()
     {
         $authors = Author::withCount('courses')->latest()->get();
@@ -51,9 +58,11 @@ class AuthorController extends Controller
 
     public function destroy(Author $author)
     {
-        // Optionally, handle what happens to courses by this author.
-        // For now, we'll just delete the author.
-        // Add onDelete('set null') in the migration if you want to keep the courses.
+        if ($author->courses()->count() > 0) {
+            // If they do, redirect back with an error message
+            return back()->with('error', 'This author cannot be deleted because they have existing courses.');
+        }
+
         $author->delete();
         return redirect()->route('authors.index')->with('success', 'Author deleted successfully.');
     }

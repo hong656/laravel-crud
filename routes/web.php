@@ -12,17 +12,17 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::middleware(['auth'])->group(function () {
+    // Define full resource routes for all models
+    Route::resource('courses', CourseController::class);
+    Route::resource('authors', AuthorController::class);
+    Route::resource('categories', CategoryController::class);
 
-// Define full resource routes for all models
-Route::resource('courses', CourseController::class);
-Route::resource('authors', AuthorController::class);
-Route::resource('categories', CategoryController::class);
+    // For reviews, we'll nest them under courses for creation
+    Route::post('courses/{course}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::resource('reviews', ReviewController::class)->only(['index', 'destroy']);
 
-// For reviews, we'll nest them under courses for creation
-Route::post('courses/{course}/reviews', [ReviewController::class, 'store'])->name('reviews.store')
-    ->middleware('auth');
-Route::resource('reviews', ReviewController::class)->only(['index', 'destroy']);
 
-Auth::routes();
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

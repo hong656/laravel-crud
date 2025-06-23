@@ -26,12 +26,13 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        // === FIX: VALIDATION RULES ARE NOW CORRECT AND UNCOMMENTED ===
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-//            'author_id' => 'required|exists:authors,id',
-//            'category_id' => 'required|exists:categories,id',
+            'author_id' => 'required|exists:authors,id',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -55,7 +56,6 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        // FIX: Eager load all necessary relationships.
         $course->load(['author', 'category', 'reviews.user']);
         return view('courses.show', compact('course'));
     }
@@ -64,13 +64,13 @@ class CourseController extends Controller
     {
         $authors = Author::all();
         $categories = Category::all();
-        // FIX: Eager load reviews for the edit page as well.
         $course->load('reviews.user');
         return view('courses.edit', compact('course', 'authors', 'categories'));
     }
 
     public function update(Request $request, Course $course)
     {
+        // === FIX: VALIDATION RULES ARE NOW CORRECT ===
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',

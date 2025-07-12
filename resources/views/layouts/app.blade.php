@@ -33,6 +33,11 @@
                         <i class="bi bi-book"></i> Courses
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.index') }}">
+                        <i class="bi bi-people"></i> Students
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {{ request()->routeIs('authors.*') || request()->routeIs('categories.*') || request()->routeIs('reviews.*') ? 'active' : '' }}" href="#" id="navbarDropdownManage" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-gear-fill"></i> Manage
@@ -65,3 +70,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<style>
+.dropdown-menu .active {
+    font-weight: bold;
+    background-color: rgba(26, 35, 126, 0.1);
+    color: #1a237e !important;
+}
+</style>

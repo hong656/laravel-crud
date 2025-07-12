@@ -44,6 +44,25 @@
         </div>
 
         <div class="col-md-4">
+            <div class="mb-3">
+                <label for="author_id" class="form-label">Author <span class="text-danger">*</span></label>
+                <select class="form-select @error('author_id') is-invalid @enderror" id="author_id" name="author_id" required>
+                    @foreach ($authors as $author)
+                    <option value="{{ $author->id }}" {{ old('author_id') == $author->id ? 'selected' : '' }}>{{ $author->name }}</option>
+                    @endforeach
+                </select>
+                @error('author_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
+                <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
+                    @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="mb-3">
